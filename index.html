@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico" type="image/x-icon" />
+  <title>كيك أوت — KickOut</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <!-- ============ FLOATING GAME HUD HEADER ============ -->
+  <header class="hud" id="hud" aria-label="التنقل الرئيسي">
+    <div class="hud__inner">
+      <!-- RIGHT NAV (appears first in RTL) -->
+      <nav class="hud__nav hud__nav--right" id="navRight">
+        <ul>
+          <li><a href="#" class="navlink navlink--home" data-fx="underline">تسجيل الدخول</a></li>
+          <li><a href="#" class="navlink navlink--how" data-fx="qbounce">كيف تلعب<span class="q">؟</span></a></li>
+        </ul>
+      </nav>
+
+      <!-- CENTER LOGO CLUSTER (overlaps / breaks out of header) -->
+      <div class="hud__logo" id="hudLogo">
+        <a href="#" class="logo" id="logo">
+          <img class="logo_img" src="logo-02.png" alt="كيك أوت" />
+        </a>
+      </div>
+
+      <!-- LEFT NAV -->
+      <nav class="hud__nav hud__nav--left" id="navLeft">
+        <ul>
+          <li><a href="#" class="navlink navlink--cat" data-fx="fan">التصنيفات
+              <span class="fan"><i></i><i></i><i></i></span>
+            </a></li>
+          <li><a href="#" class="navlink navlink--contact" data-fx="bubble">تواصل معنا
+              <span class="bubble"></span>
+            </a></li>
+          <li>
+            <button class="arcade-btn arcade-btn--sm" id="headerCta" type="button">
+              <span class="arcade-btn__face">ابدأ التحدي!</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ THE 2.99 KICKOUT ARENA (HERO) ============ -->
+  <main>
+    <section class="arena" id="arena" aria-label="حلبة كيك أوت">
+      <!-- BACKGROUND SIMPLE RADIAL GLOW -->
+      <div class="glow" id="giant" data-depth="bg" aria-hidden="true"></div>
+
+      <!-- WRESTLING RING ROPES (multiple depth layers) -->
+      <div class="ropes ropes--back" data-depth="rope-back" aria-hidden="true">
+        <span class="rope rope--blue rope--b1"></span>
+        <span class="rope rope--red rope--b2"></span>
+      </div>
+      <div class="ropes ropes--front" data-depth="rope-front" aria-hidden="true">
+        <span class="rope rope--red rope--f1"></span>
+        <span class="rope rope--blue rope--f2"></span>
+      </div>
+
+      <!-- FLOATING TRIVIA CARDS -->
+      <div class="cards" aria-hidden="true">
+        <div class="tcard tcard--wm" data-depth="card-mid" style="--r:-9deg">راسلمينيا</div>
+        <div class="tcard tcard--guess" data-depth="card-mid" style="--r:7deg">خمن المصارع</div>
+        <div class="tcard tcard--titles" data-depth="card-mid" style="--r:-4deg">الألقاب</div>
+        <div class="tcard tcard--who" data-depth="card-mid" style="--r:12deg">من قالها؟</div>
+        <div class="tcard tcard--blur2 tcard--moments" data-depth="card-mid" style="--r:30deg; top: 550px;">اللحظات
+          التاريخية</div>
+        <div class="tcard tcard--pts500" data-depth="card-mid" style="--r:-15deg">500</div>
+        <div class="tcard tcard--blur tcard--pts300" data-depth="card-front" style="--r:6deg">300</div>
+      </div>
+
+      <!-- CENTER HERO CONTENT -->
+      <div class="hero" id="hero" data-depth="hero">
+        <p class="hero__eyebrow" data-seq="1">جاهز تختبر معلوماتك؟</p>
+        <h1 class="hero__title">
+          <span class="hero__line1" data-seq="2">تعرف المصارعة؟</span>
+          <span class="hero__line2" data-seq="3">
+            أثبتها في <span class="ring-word" id="ringWord">الحلبة.</span>
+          </span>
+        </h1>
+
+        <div class="hero__cta" data-seq="4">
+          <span class="hero__prompt">اضغط للبدء</span>
+          <button class="arcade-btn arcade-btn--lg" id="heroCta" type="button">
+            <span class="arcade-btn__face" id="heroCtaFace">ادخل الحلبة</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- click flash layer -->
+      <span class="flash" id="flash" aria-hidden="true"></span>
+
+      <!-- scroll hint -->
+      <div class="scroll-hint" aria-hidden="true">
+        <span class="scroll-hint__txt">مرّر للأسفل</span>
+        <span class="scroll-hint__arrow"></span>
+      </div>
+    </section>
+
+    <!-- ============ كيف تلعب؟ ============ -->
+    <section class="how-to-play" id="howToPlay" aria-label="كيف تلعب؟">
+      <div class="how-to-play__rise" aria-hidden="true"></div>
+      <div class="how-to-sticky">
+        <div class="tutorial-intro">
+          <h2 class="tutorial-intro__title" id="howTitle">كيف تلعب؟</h2>
+          <p class="tutorial-intro__sub" id="howSub">بسيطة... بس الفوز مو مضمون</p>
+        </div>
+        <div class="tutorial-layout">
+          <div class="tutorial-progress" aria-hidden="true">
+            <span class="ref-count ref-count--fill"></span>
+            <span class="ref-node" data-stage="0"><b>1</b></span>
+            <span class="ref-node" data-stage="1"><b>2</b></span>
+            <span class="ref-node ref-node--wide" data-stage="2"><b>2.99</b></span>
+            <span class="ref-node" data-stage="3"><b>!</b></span>
+          </div>
+          <div class="tutorial-copy">
+            <div class="tutorial-copy__item" data-stage="0"><span class="tutorial-copy__num">1</span>
+              <h3 class="tutorial-copy__head">جهّز فرقك</h3>
+              <p class="tutorial-copy__text">اختار اسم الفريقين... وابدأ التحدي.</p>
+            </div>
+            <div class="tutorial-copy__item" data-stage="1"><span class="tutorial-copy__num">2</span>
+              <h3 class="tutorial-copy__head">اختاروا التصنيفات</h3>
+              <p class="tutorial-copy__text">كل فريق يختار تصنيفاته... اختاروا صح.</p>
+            </div>
+            <div class="tutorial-copy__item" data-stage="2"><span class="tutorial-copy__num">3</span>
+              <h3 class="tutorial-copy__head">العب وارفع النقاط</h3>
+              <p class="tutorial-copy__text">اختار السؤال... وإذا تعرف الإجابة، النقاط لك.</p>
+            </div>
+            <div class="tutorial-copy__item" data-stage="3"><span class="tutorial-copy__num">4</span>
+              <h3 class="tutorial-copy__head">اجمع النقاط... وخذ الفوز</h3>
+              <p class="tutorial-copy__text">الفريق اللي يجمع نقاط أكثر... ياخذ الفوز!</p>
+            </div>
+          </div>
+          <div class="tutorial-board" id="tutorialBoard">
+            <!-- animated fake game cursor -->
+            <span class="tutorial-cursor" id="tutCursor" aria-hidden="true"></span>
+            <div class="tutorial-scoreboard" id="scoreboard">
+              <div class="sb-team sb-team--blue"><span class="sb-team__name">فريق الروك</span><span
+                  class="sb-team__score" id="sbBlueScore">0</span></div>
+              <div class="sb-vs">VS</div>
+              <div class="sb-team sb-team--red"><span class="sb-team__name">فريق سينا</span><span
+                  class="sb-team__score">0</span></div>
+            </div>
+            <div class="tutorial-stage stage--teams" data-stage="0" id="stageTeams">
+              <div class="team-panel team-panel--blue"><span class="team-panel__label">الفريق الأزرق</span><span
+                  class="team-panel__name" id="blueTeamName"></span></div>
+              <div class="vs-badge" id="vsBadge">VS</div>
+              <div class="team-panel team-panel--red"><span class="team-panel__label">الفريق الأحمر</span><span
+                  class="team-panel__name" id="redTeamName"></span></div>
+            </div>
+            <div class="tutorial-stage stage--cats" data-stage="1">
+              <div class="cat-grid">
+                <div class="cat-card" id="catWM" style="--rot:-2deg">راسلمنيا</div>
+                <div class="cat-card" id="catTitles" style="--rot:1.5deg">الألقاب</div>
+                <div class="cat-card" style="--rot:-1deg">خمن المصارع</div>
+                <div class="cat-card" style="--rot:2deg">من قالها؟</div>
+                <div class="cat-card" style="--rot:-1.5deg">اللحظات التاريخية</div>
+                <div class="cat-card" style="--rot:1deg">أبطال زمان</div>
+              </div>
+            </div>
+            <div class="tutorial-stage stage--play" data-stage="2">
+              <div class="play-cat">راسلمنيا</div>
+              <div class="value-grid" id="valueGrid"><button class="value-tile" type="button">100</button><button
+                  class="value-tile" type="button">200</button><button class="value-tile"
+                  type="button">300</button><button class="value-tile" type="button">400</button><button
+                  class="value-tile" id="tile500" type="button">500</button><button class="value-tile"
+                  type="button">600</button></div>
+              <div class="question-panel" id="questionPanel">
+                <p class="question-panel__q">من فاز بالحدث الرئيسي في راسلمينيا؟</p>
+                <div class="answer-row"><button class="answer-btn answer-btn--correct" type="button">✓ إجابة
+                    صحيحة</button><button class="answer-btn answer-btn--wrong" type="button">✕ إجابة خاطئة</button>
+                </div>
+              </div>
+            </div>
+            <div class="tutorial-stage stage--winner" data-stage="3"><span class="winner-team">فريق الروك</span><span
+                class="winner-label">الفائز!</span><button class="arcade-btn arcade-btn--lg" type="button"><span
+                  class="arcade-btn__face">فهمت... يلا نلعب!</span></button></div>
+            <span class="confetti" id="confetti" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+      <div class="how-to-play__rise1" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============ CHOOSE YOUR ARENA ============ -->
+    <section class="challenge-terminal" id="challengeTerminal" aria-label="اختر ساحة التحدي">
+
+      <!-- Background decorations -->
+      <div class="terminal-bg">
+        <span class="terminal-glow terminal-glow--blue"></span>
+        <span class="terminal-glow terminal-glow--yellow"></span>
+      </div>
+
+      <div class="terminal-container">
+
+        <!-- Section Heading -->
+        <div class="terminal-heading">
+
+          <span class="terminal-heading__eyebrow">
+             اختر تحديك
+          </span>
+
+          <h2 class="terminal-heading__title">
+            اختر ساحة التحدي
+          </h2>
+
+          <p class="terminal-heading__text">
+            كل تصنيف له تحدياته الخاصة...
+            <br>
+            أي واحد راح تبدأ فيه؟
+          </p>
+
+        </div>
+
+        <div class="terminal-layout">
+
+          <!-- Challenge Terminal -->
+          <div class="terminal-machine" id="terminalMachine">
+
+            <!-- Decorative Lights -->
+            <div class="terminal-lights" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <!-- Screen -->
+            <div class="terminal-screen">
+
+              <div class="terminal-screen__header">
+                KICKOUT TERMINAL
+              </div>
+
+              <div class="terminal-screen__content">
+
+                <span class="screen-status">
+                  NOW LOADING...
+                </span>
+
+                <span class="screen-category" id="screenCategory">
+                  راسلمينيا
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- Arcade Buttons -->
+            <div class="terminal-controls">
+
+              <button class="terminal-btn terminal-btn--blue" aria-hidden="true"></button>
+
+              <button class="terminal-btn terminal-btn--yellow" aria-hidden="true"></button>
+
+              <button class="terminal-btn terminal-btn--red" aria-hidden="true"></button>
+
+            </div>
+
+            <!-- Card Exit Slot -->
+            <div class="terminal-slot">
+
+              <div class="terminal-slot__shadow"></div>
+
+            </div>
+
+          </div>
+
+          <!-- Category Cards -->
+
+          <div class="terminal-cards" id="terminalCards">
+
+            <!-- Wrestlemania -->
+            <article class="terminal-card terminal-card--wm" data-title="راسلمنيا">
+
+              <span class="terminal-card__badge">
+                <img src="images/ring.png" class="terminal-card__image" alt="راسلمنيا" />
+              </span>
+
+              <h3>راسلمنيا</h3>
+
+              <p>
+                أكبر الأحداث...
+                وأصعب الأسئلة.
+              </p>
+
+            </article>
+
+            <!-- Championships -->
+            <article class="terminal-card terminal-card--titles" data-title="الألقاب">
+
+              <span class="terminal-card__badge">
+                  <img src="images/belt.png" class="terminal-card__image" alt="الألقاب" />
+              </span>
+
+              <h3>الألقاب</h3>
+
+              <p>
+                من حمل الذهب...
+                ومن خسره؟
+              </p>
+
+            </article>
+
+            <!-- Guess Wrestler -->
+            <article class="terminal-card terminal-card--guess" data-title="خمن المصارع">
+
+              <span class="terminal-card__badge">
+                <img src="images/who.png" class="terminal-card__image" alt="خمن المصارع" />
+              </span>
+
+              <h3>خمن المصارع</h3>
+
+              <p>
+                هل تعرفه
+                من مجرد تلميح؟
+              </p>
+
+            </article>
+
+            <!-- Promos -->
+            <article class="terminal-card terminal-card--promo" data-title="من قالها؟">
+
+              <span class="terminal-card__badge">
+                <img src="images/mic.png" class="terminal-card__image" alt="من قالها؟" />
+              </span>
+
+              <h3>من قالها؟</h3>
+
+              <p>
+                أشهر البروموهات...
+                لمن كانت؟
+              </p>
+
+            </article>
+
+            <!-- Finishers -->
+            <article class="terminal-card terminal-card--finishers" data-title="الضربات القاضية">
+
+              <span class="terminal-card__badge">
+                <img src="images/burst.png" class="terminal-card__image" alt="الضربات القاضية" />
+              </span>
+
+              <h3>الضربات القاضية</h3>
+
+              <p>
+                اعرف الحركة...
+                واعرف صاحبها.
+              </p>
+
+            </article>
+
+            <!-- Legends -->
+            <article class="terminal-card terminal-card--legends" data-title="الأساطير">
+
+              <span class="terminal-card__badge">
+                <img src="images/champ.png" class="terminal-card__image" alt="الأساطير" />
+              </span>
+
+              <h3>الأساطير</h3>
+
+              <p>
+                أسئلة عن أعظم
+                النجوم عبر التاريخ.
+              </p>
+
+            </article>
+
+          </div>
+
+        </div>
+
+        <!-- CTA -->
+
+        <div class="terminal-footer">
+
+          <p class="terminal-footer__text">
+            جاهز تبدأ أول تحدي؟
+          </p>
+
+          <button class="arcade-btn arcade-btn--lg" id="terminalCTA">
+
+            <span class="arcade-btn__face">
+
+              اختر أول تحدي
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+
+</html>
