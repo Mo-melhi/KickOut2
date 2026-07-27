@@ -21,7 +21,7 @@
       <nav class="hud__nav hud__nav--right" id="navRight">
         <ul>
           <li><a href="#" class="navlink navlink--home" data-fx="underline">تسجيل الدخول</a></li>
-          <li><a href="#" class="navlink navlink--how" data-fx="qbounce">كيف تلعب<span class="q">؟</span></a></li>
+          <li><a href="#howToPlay" class="navlink navlink--how" data-fx="qbounce">كيف تلعب<span class="q">؟</span></a></li>
         </ul>
       </nav>
 
@@ -35,7 +35,7 @@
       <!-- LEFT NAV -->
       <nav class="hud__nav hud__nav--left" id="navLeft">
         <ul>
-          <li><a href="#" class="navlink navlink--cat" data-fx="fan">التصنيفات
+          <li><a href="#challengeTerminal" class="navlink navlink--cat" data-fx="fan">التصنيفات
               <span class="fan"><i></i><i></i><i></i></span>
             </a></li>
           <li><a href="#" class="navlink navlink--contact" data-fx="bubble">تواصل معنا
@@ -176,11 +176,26 @@
                   class="value-tile" id="tile500" type="button">500</button><button class="value-tile"
                   type="button">600</button></div>
               <div class="question-panel" id="questionPanel">
-                <p class="question-panel__q">من فاز بالحدث الرئيسي في راسلمينيا؟</p>
-                <div class="answer-row"><button class="answer-btn answer-btn--correct" type="button">✓ إجابة
-                    صحيحة</button><button class="answer-btn answer-btn--wrong" type="button">✕ إجابة خاطئة</button>
-                </div>
-              </div>
+
+    <p style="margin-top: 70px;" class="question-panel__q">
+        من فاز بالحدث الرئيسي في راسلمينيا؟
+    </p>
+
+    <div class="answer-row">
+        <button class="answer-btn answer-btn--correct" type="button">
+            ✓ إجابة صحيحة
+        </button>
+
+        <button class="answer-btn answer-btn--wrong" type="button">
+            ✕ إجابة خاطئة
+        </button>
+    </div>
+
+    <button class="skip-btn" type="button">
+        ⏭ تخطي السؤال
+    </button>
+
+</div>
             </div>
             <div class="tutorial-stage stage--winner" data-stage="3"><span class="winner-team">فريق الروك</span><span
                 class="winner-label">الفائز!</span><button class="arcade-btn arcade-btn--lg" type="button"><span
@@ -194,6 +209,7 @@
 
     <!-- ============ CHOOSE YOUR ARENA ============ -->
     <section class="challenge-terminal" id="challengeTerminal" aria-label="اختر ساحة التحدي">
+      <div class="glow" id="giant" data-depth="bg" aria-hidden="true"></div>
 
       <!-- Background decorations -->
       <div class="terminal-bg">
@@ -207,7 +223,7 @@
         <div class="terminal-heading">
 
           <span class="terminal-heading__eyebrow">
-             اختر تحديك
+            اختر تحديك
           </span>
 
           <h2 class="terminal-heading__title">
@@ -299,7 +315,7 @@
             <article class="terminal-card terminal-card--titles" data-title="الألقاب">
 
               <span class="terminal-card__badge">
-                  <img src="images/belt.png" class="terminal-card__image" alt="الألقاب" />
+                <img src="images/belt.png" class="terminal-card__image" alt="الألقاب" />
               </span>
 
               <h3>الألقاب</h3>
@@ -379,23 +395,56 @@
 
         </div>
 
-        <!-- CTA -->
+      </div>
 
-        <div class="terminal-footer">
+    </section>
+    <section class="main-event" id="cta">
 
-          <p class="terminal-footer__text">
-            جاهز تبدأ أول تحدي؟
+
+      <!-- WRESTLING RING ROPES (multiple depth layers) -->
+      <div style="filter: blur(1px);" class="ropes ropes--back" data-depth="rope-back" aria-hidden="true">
+        <span style="width: 1700px;" class="rope rope--blue rope--b1"></span>
+        <span style="width: 1700px;" class="rope rope--red rope--b2"></span>
+      </div>
+      <div style="filter: blur(2px);" class="ropes ropes--front" data-depth="rope-front" aria-hidden="true">
+        <span style="width: 1700px;" class="rope rope--red rope--f1"></span>
+        <span style="width: 1700px;" class="rope rope--blue rope--f2"></span>
+      </div>
+
+      <div class="cta__glow"></div>
+
+
+      <div class="container">
+
+        <div class="cta__content">
+
+          <span style="z-index: 1000;" class="cta__label">
+            ★ الحدث الرئيسي ★
+          </span>
+
+          <h2 style="z-index: 1000;">
+            هل أنت مستعد لدخول الحلبة؟
+          </h2>
+
+          <p>
+            اختبر معلوماتك في أكثر من 300 سؤال،
+            واجمع النقاط،
+            وتحدَّ أصدقاءك لتثبت أنك ملك عالم WWE.
           </p>
 
-          <button class="arcade-btn arcade-btn--lg" id="terminalCTA">
 
-            <span class="arcade-btn__face">
 
-              اختر أول تحدي
+          <div style="z-index: 1000;" class="cta__buttons">
 
-            </span>
+            <a href="#game" class="cta__button cta__button--primary">
+              ادخل الحلبة
+            </a>
 
-          </button>
+            <a href="#contact" class="cta__button cta__button--secondary">
+              تواصل معنا
+            </a>
+
+          </div>
 
         </div>
 
@@ -403,8 +452,96 @@
 
     </section>
 
-  </main>
+    <footer class="footer">
 
+      <div class="container">
+
+        <!-- Top -->
+
+        <div class="footer__top">
+
+          <!-- Brand -->
+
+          <div class="footer__brand">
+
+            <a href="#" class="footer__logo">
+              KickOut
+            </a>
+
+            <p class="footer__description">
+              اختبر معلوماتك، تحدَّ أصدقاءك، وكن بطل الحلبة في
+              أول لعبة مسابقات عربية لعشاق WWE.
+            </p>
+
+          </div>
+
+          <!-- Navigation -->
+
+          <nav class="footer__nav">
+
+            <a href="#hero">الرئيسية</a>
+
+            <a href="#how-it-works">
+              كيف تعمل
+            </a>
+
+            <a href="#categories">
+              الفئات
+            </a>
+
+            <a href="#contact">
+              تواصل معنا
+            </a>
+
+          </nav>
+
+        </div>
+
+        <!-- Divider -->
+
+        <div class="footer__divider">
+          <span></span>
+          <i>★</i>
+          <span></span>
+        </div>
+
+        <!-- Bottom -->
+
+        <div class="footer__bottom">
+
+          <p style="direction: rtl;" class="footer__copyright">
+
+            © 2026 KickOut
+          </p>
+          <p style="direction: rtl;" class="footer__copyright" >
+            صُمم لمحبي WWE في الوطن العربي.
+
+          </p>
+
+          <div class="footer__socials">
+
+            <a href="#" aria-label="Instagram">
+              <i class="ph ph-instagram-logo"></i>
+            </a>
+
+            <a href="#" aria-label="TikTok">
+              <i class="ph ph-tiktok-logo"></i>
+            </a>
+
+            <a href="#" aria-label="X">
+              <i class="ph ph-x-logo"></i>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </footer>
+
+  </main>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script type="module" src="./script.js"></script>
 </body>
 
