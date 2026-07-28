@@ -1790,8 +1790,8 @@ body.intro .hud__nav--left {
 }
 
 .logo_img {
-    padding-top: 10px;
-    width: 250px;
+    padding-top: 20px;
+    width: 210px;
     height: auto;
     object-fit: cover;
 }
