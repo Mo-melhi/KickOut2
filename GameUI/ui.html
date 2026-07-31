@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>كيك أوت — المباراة | KickOut</title>
+  <meta name="description" content="كيك أوت — لعبة تحدي معلومات المصارعة. فريقان يتنافسان على لقب البطولة. اختبر معلوماتك وأثبتها في الحلبة." />
+  <meta name="theme-color" content="#EEF2F7" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="ui.css" />
+</head>
+<body>
+
+  <!-- Decorative arena background (shared across screens) -->
+  <div class="bg-arena" aria-hidden="true">
+    <div class="bg-glow"></div>
+    <div class="rope rope--red bg-rope-1"></div>
+    <div class="rope rope--blue bg-rope-2"></div>
+    <div class="rope rope--yellow bg-rope-3"></div>
+    <div class="rope rope--blue bg-rope-4"></div>
+  </div>
+
+  <!-- Floating brand HUD -->
+  <header class="hud">
+    <div class="hud__inner">
+      <button class="hud__home" id="hudHome" type="button" aria-label="العودة إلى البداية">
+        <span class="logo">
+          <img class="logo__kick" src="logo-1-06.png" alt="Kick" />
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+
+    <!-- ============ SCREEN 1: TEAM NAMES ============ -->
+    <section class="screen screen--setup is-active" id="screen-setup" aria-label="بداية المباراة">
+      <div class="setup">
+        <span class="eyebrow">استعدوا للنزال</span>
+        <h1 class="screen-title">ابدأ المباراة</h1>
+        <p class="screen-sub">أدخلوا أسماء الفريقين</p>
+
+        <div class="versus">
+          <div class="team-input team-input--red">
+            <span class="team-input__badge">الفريق الأول</span>
+            <input class="team-input__field" id="team1Name" type="text" maxlength="18" placeholder="اسم الفريق الأول" autocomplete="off" />
+          </div>
+
+          <div class="vs-badge" aria-hidden="true">
+            <span>VS</span>
+          </div>
+
+          <div class="team-input team-input--blue">
+            <span class="team-input__badge">الفريق الثاني</span>
+            <input class="team-input__field" id="team2Name" type="text" maxlength="18" placeholder="اسم الفريق الثاني" autocomplete="off" />
+          </div>
+        </div>
+
+        <p class="form-error" id="setupError" role="alert" hidden></p>
+
+        <button class="btn btn--xl" id="startBtn" type="button">
+          <span class="btn__face">ادخل الحلبة</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 2: CATEGORY SELECTION ============ -->
+    <section class="screen screen--categories" id="screen-categories" aria-label="اختيار التصنيفات" hidden>
+      <div class="categories">
+        <span class="eyebrow" id="pickEyebrow">دور الاختيار</span>
+        <h2 class="screen-title">
+          <span class="pick-team" id="pickTeamName">الفريق الأول</span>
+          يختار تصنيفين
+        </h2>
+        <p class="screen-sub">اضغط على تصنيفين لإضافتهما إلى لوحة اللعب</p>
+
+        <div class="pick-counter">
+          <span class="pick-counter__label">تم الاختيار</span>
+          <span class="pick-counter__value"><span id="pickCount">0</span> / 2</span>
+        </div>
+
+        <div class="cat-grid" id="catGrid"><!-- category cards injected by JS --></div>
+
+        <button class="btn btn--lg is-disabled" id="catNextBtn" type="button" disabled>
+          <span class="btn__face" id="catNextLabel">اختر تصنيفين للمتابعة</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 3: QUESTION BOARD ============ -->
+    <section class="screen screen--board" id="screen-board" aria-label="لوحة اللعب" hidden>
+
+      <!-- Arena scoreboard -->
+      <div class="scoreboard">
+        <div class="score-team score-team--red" id="scoreTeam1">
+          <span class="score-team__name" id="sbName1">الفريق الأول</span>
+          <span class="score-team__points" id="sbScore1">0</span>
+          <span class="score-team__turn" id="sbTurn1">دور اللعب</span>
+        </div>
+
+        <div class="score-center">
+          <span class="score-center__logo">
+            <img class="logo__kick" src="logo-1-07.png" alt="Kick" />
+          </span>
+          <span class="score-center__meta"><span id="questionsLeft">16</span> سؤال متبقٍ</span>
+        </div>
+
+        <div class="score-team score-team--blue" id="scoreTeam2">
+          <span class="score-team__name" id="sbName2">الفريق الثاني</span>
+          <span class="score-team__points" id="sbScore2">0</span>
+          <span class="score-team__turn" id="sbTurn2">دور اللعب</span>
+        </div>
+      </div>
+
+      <div class="board-grid" id="boardGrid"><!-- category panels injected by JS --></div>
+    </section>
+
+    <!-- ============ SCREEN 5: WINNER ============ -->
+    <section class="screen screen--winner" id="screen-winner" aria-label="الفائز" hidden>
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+      <div class="winner">
+        <span class="eyebrow eyebrow--gold">بطل النزال</span>
+        <div class="trophy" aria-hidden="true">
+          <div class="trophy__cup">
+            <div class="trophy__handle trophy__handle--l"></div>
+            <div class="trophy__handle trophy__handle--r"></div>
+            <div class="trophy__star">★</div>
+          </div>
+          <div class="trophy__stem"></div>
+          <div class="trophy__base"></div>
+        </div>
+        <h2 class="winner__title" id="winnerTitle">الفريق الأول</h2>
+        <p class="winner__tag" id="winnerTag">بطل حلبة كيك أوت</p>
+
+        <div class="winner__scores">
+          <div class="winner__score winner__score--win" id="finalCard1">
+            <span class="winner__score-name" id="finalName1">الفريق الأول</span>
+            <span class="winner__score-points" id="finalScore1">0</span>
+          </div>
+          <div class="winner__score winner__score--lose" id="finalCard2">
+            <span class="winner__score-name" id="finalName2">الفريق الثاني</span>
+            <span class="winner__score-points" id="finalScore2">0</span>
+          </div>
+        </div>
+
+        <div class="winner__actions">
+          <button class="btn btn--lg" id="playAgainBtn" type="button">
+            <span class="btn__face">إعادة المباراة</span>
+          </button>
+          <button class="btn btn--lg btn--ghost" id="homeBtn" type="button">
+            <span class="btn__face">الصفحة الرئيسية</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ SCREEN 4: QUESTION MODAL ============ -->
+  <div class="modal" id="questionModal" hidden>
+    <div class="modal__overlay" id="modalOverlay"></div>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalQuestion">
+      <div class="modal__top">
+        <span class="modal__category" id="modalCategory">التصنيف</span>
+        <span class="modal__points" id="modalPoints">400</span>
+      </div>
+
+      <p class="modal__turn">دور <span id="modalTurnTeam">الفريق الأول</span></p>
+
+      <h3 class="modal__question" id="modalQuestion">نص السؤال هنا</h3>
+
+      <div class="modal__answer" id="modalAnswer" hidden>
+        <span class="modal__answer-label">الإجابة</span>
+        <p class="modal__answer-text" id="modalAnswerText"></p>
+      </div>
+
+      <div class="modal__actions">
+        <button class="qbtn qbtn--reveal" id="revealBtn" type="button">
+          <span class="qbtn__icon">👁</span><span>اكشف الإجابة</span>
+        </button>
+        <button class="qbtn qbtn--right" id="rightBtn" type="button">
+          <span class="qbtn__icon">✔</span><span>إجابة صحيحة</span>
+        </button>
+        <button class="qbtn qbtn--wrong" id="wrongBtn" type="button">
+          <span class="qbtn__icon">✖</span><span>إجابة خاطئة</span>
+        </button>
+        <button class="qbtn qbtn--skip" id="skipBtn" type="button">
+          <span class="qbtn__icon">⏭</span><span>تخطي</span>
+        </button>
+      </div>
+
+      <button class="modal__back" id="backBtn" type="button">الرجوع إلى اللوحة</button>
+    </div>
+  </div>
+
+  <script src="ui.js"></script>
+</body>
+</html>
