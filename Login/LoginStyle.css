@@ -62,20 +62,15 @@ body {
    LAYOUT - Split Page
    ============================================ */
 
-.login-page {
-    position: relative;
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
+.login-page{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    min-height:100vh;
+    background:#f3f4f6;
 }
 
-.login-side {
-    width: 45%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
 
 
 .illustration-side {
@@ -85,14 +80,13 @@ body {
     align-items: center;
 }
 
-.login-side {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 32px;
-    background: var(--gray-100);
-    position: relative;
-    overflow: hidden;
+.login-side{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:transparent;
+    padding:40px;
 }
 
 .auth-slider {
