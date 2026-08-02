@@ -2,45 +2,86 @@
    كيك أوت — KickOut | Game Logic (Vanilla JS SPA)
    Host control panel — manual timing & turn control.
    ============================================================ */
+
+
+
 (function () {
+
+  
   "use strict";
+
+  const speakerOn = `
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 3 9 3 15 6 15 11 19 11 5"></polygon>
+    <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+    <path d="M18.5 5.5a9 9 0 0 1 0 13"></path>
+</svg>
+`;
+
+const speakerOff = `
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 3 9 3 15 6 15 11 19 11 5"></polygon>
+    <line x1="23" y1="9" x2="17" y2="15"></line>
+    <line x1="17" y1="9" x2="23" y2="15"></line>
+</svg>
+`;
+const winnerMusicBtn = $("winnerMusicBtn");
+const winnerMusicIcon = $("winnerMusicIcon");
+
+winnerMusicBtn.addEventListener("click", function () {
+
+    winnerMusic.muted = !winnerMusic.muted;
+
+    winnerMusicIcon.innerHTML =
+        winnerMusic.muted
+            ? speakerOff
+            : speakerOn;
+
+});
+
+const winnerMusic = new Audio("winner.mp3");
+
+winnerMusic.loop = true;
+winnerMusic.volume = 0.45;
 
   /* ---------- Icon set (inline SVG, no emojis) ---------- */
   var S = 'stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"';
   var ICONS = {
-    trophy: '<svg viewBox="0 0 24 24" '+S+'><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/><path d="M12 14v4M9 21h6M9.5 21l.5-3h4l.5 3"/></svg>',
-    bell:   '<svg viewBox="0 0 24 24" '+S+'><path d="M6 16V10a6 6 0 1 1 12 0v6l1.5 2h-15L6 16Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
-    star:   '<svg viewBox="0 0 24 24" '+S+'><path d="M12 3.5 14.6 9l6 .6-4.5 4 1.3 5.9L12 16.8 6.6 19.5 7.9 13.6l-4.5-4 6-.6L12 3.5Z"/></svg>',
-    bolt:   '<svg viewBox="0 0 24 24" '+S+'><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>',
-    music:  '<svg viewBox="0 0 24 24" '+S+'><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>',
-    hands:  '<svg viewBox="0 0 24 24" '+S+'><path d="M12 12 8.5 8.5a2 2 0 0 0-3 2.6L9 15M12 12l3.5-3.5a2 2 0 0 1 3 2.6L15 15"/><path d="M9 15v3a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-3"/></svg>',
-    crown:  '<svg viewBox="0 0 24 24" '+S+'><path d="M4 8l3 8h10l3-8-4.5 3L12 6 8.5 11 4 8Z"/><path d="M6 19h12"/></svg>',
-    ring:   '<svg viewBox="0 0 24 24" '+S+'><rect x="3" y="7" width="18" height="12" rx="1"/><path d="M3 7 6 3h12l3 4M7 7v12M17 7v12"/></svg>',
-    buoy:   '<svg viewBox="0 0 24 24" '+S+'><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4"/><path d="M5 5l4.5 4.5M14.5 14.5 19 19M19 5l-4.5 4.5M9.5 14.5 5 19"/></svg>'
+    trophy: '<svg viewBox="0 0 24 24" ' + S + '><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/><path d="M12 14v4M9 21h6M9.5 21l.5-3h4l.5 3"/></svg>',
+    bell: '<svg viewBox="0 0 24 24" ' + S + '><path d="M6 16V10a6 6 0 1 1 12 0v6l1.5 2h-15L6 16Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
+    star: '<svg viewBox="0 0 24 24" ' + S + '><path d="M12 3.5 14.6 9l6 .6-4.5 4 1.3 5.9L12 16.8 6.6 19.5 7.9 13.6l-4.5-4 6-.6L12 3.5Z"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" ' + S + '><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>',
+    music: '<svg viewBox="0 0 24 24" ' + S + '><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>',
+    hands: '<svg viewBox="0 0 24 24" ' + S + '><path d="M12 12 8.5 8.5a2 2 0 0 0-3 2.6L9 15M12 12l3.5-3.5a2 2 0 0 1 3 2.6L15 15"/><path d="M9 15v3a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-3"/></svg>',
+    crown: '<svg viewBox="0 0 24 24" ' + S + '><path d="M4 8l3 8h10l3-8-4.5 3L12 6 8.5 11 4 8Z"/><path d="M6 19h12"/></svg>',
+    ring: '<svg viewBox="0 0 24 24" ' + S + '><rect x="3" y="7" width="18" height="12" rx="1"/><path d="M3 7 6 3h12l3 4M7 7v12M17 7v12"/></svg>',
+    buoy: '<svg viewBox="0 0 24 24" ' + S + '><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4"/><path d="M5 5l4.5 4.5M14.5 14.5 19 19M19 5l-4.5 4.5M9.5 14.5 5 19"/></svg>'
   };
 
   /* ---------- Genre filters ---------- */
   var GENRES = [
-    { id: "all",     name: "الكل" },
-    { id: "titles",  name: "البطولات" },
-    { id: "stars",   name: "النجوم" },
-    { id: "events",  name: "الأحداث" },
-    { id: "moves",   name: "الحركات" },
-    { id: "music",   name: "الموسيقى" },
-    { id: "teams",   name: "الفرق" },
-    { id: "women",   name: "السيدات" }
+    { id: "all", name: "الكل" },
+    { id: "titles", name: "البطولات" },
+    { id: "stars", name: "النجوم" },
+    { id: "events", name: "الأحداث" },
+    { id: "moves", name: "الحركات" },
+    { id: "music", name: "الموسيقى" },
+    { id: "teams", name: "الفرق" },
+    { id: "women", name: "السيدات" }
   ];
 
   /* ---------- Category catalogue ---------- */
   var CATEGORIES = [
-    { id: "titles",    name: "الألقاب",         icon: "trophy", accent: "var(--yellow)", genre: "titles", desc: "من حمل الذهب... ومن خسره؟" },
-    { id: "rumble",    name: "رويال رامبل",     icon: "bell",   accent: "var(--red)",    genre: "events", desc: "ثلاثون نجماً... وفائز واحد فقط." },
-    { id: "legends",   name: "الأساطير",        icon: "star",   accent: "var(--blue)",   genre: "stars",  desc: "أساطير صنعت تاريخ الحلبة." },
-    { id: "finishers", name: "الحركات القاضية", icon: "bolt",   accent: "var(--red)",    genre: "moves",  desc: "الحركات التي تُنهي النزال." },
-    { id: "themes",    name: "أغاني الدخول",    icon: "music",  accent: "var(--blue)",   genre: "music",  desc: "الألحان التي تهزّ الجماهير." },
-    { id: "tag",       name: "الفرق الثنائية",  icon: "hands",  accent: "var(--yellow)", genre: "teams",  desc: "أقوى الثنائيات في التاريخ." },
-    { id: "women",     name: "قسم السيدات",     icon: "crown",  accent: "var(--red)",    genre: "women",  desc: "نجمات غيّرن قواعد اللعبة." },
-    { id: "mania",     name: "راسلمينيا",       icon: "ring",   accent: "var(--blue)",   genre: "events", desc: "أعظم حدث في عالم المصارعة." }
+    { id: "titles", name: "الألقاب", icon: "trophy", accent: "var(--yellow)", genre: "titles", desc: "من حمل الذهب... ومن خسره؟" },
+    { id: "rumble", name: "رويال رامبل", icon: "bell", accent: "var(--red)", genre: "events", desc: "ثلاثون نجماً... وفائز واحد فقط." },
+    { id: "legends", name: "الأساطير", icon: "star", accent: "var(--blue)", genre: "stars", desc: "أساطير صنعت تاريخ الحلبة." },
+    { id: "finishers", name: "الحركات القاضية", icon: "bolt", accent: "var(--red)", genre: "moves", desc: "الحركات التي تُنهي النزال." },
+    { id: "themes", name: "أغاني الدخول", icon: "music", accent: "var(--blue)", genre: "music", desc: "الألحان التي تهزّ الجماهير." },
+    { id: "tag", name: "الفرق الثنائية", icon: "hands", accent: "var(--yellow)", genre: "teams", desc: "أقوى الثنائيات في التاريخ." },
+    { id: "women", name: "قسم السيدات", icon: "crown", accent: "var(--red)", genre: "women", desc: "نجمات غيّرن قواعد اللعبة." },
+    { id: "mania", name: "راسلمينيا", icon: "ring", accent: "var(--blue)", genre: "events", desc: "أعظم حدث في عالم المصارعة." }
   ];
 
   var POINTS = [200, 200, 400, 400, 600, 600];
@@ -333,7 +374,6 @@
     state.teams[1].helpers = 3;
 
     renderScoreboard();
-    renderHelpers();
     renderBoardGrid();
     updateScoreboard(false);
     showScreen("board");
@@ -347,27 +387,37 @@
     $("centerMatchName").textContent = state.matchName;
   }
 
-  function renderHelpers() {
-    [0, 1].forEach(function (t) {
-      var wrap = $("helpers" + (t + 1));
-      wrap.innerHTML = "";
-      for (var i = 0; i < 3; i++) {
-        var b = el("button", "helper-btn");
-        b.type = "button";
-        b.innerHTML = ICONS.buoy;
-        b.setAttribute("aria-label", "وسيلة مساعدة للفريق");
-        b.setAttribute("title", "وسيلة مساعدة (تُستخدم مرة واحدة)");
-        (function (btn, team) {
-          btn.addEventListener("click", function () {
-            if (btn.classList.contains("is-used")) return;
-            btn.classList.add("is-used");
-            btn.disabled = true;
-            state.teams[team].helpers -= 1;
-          });
-        })(b, t);
-        wrap.appendChild(b);
+  function renderModalHelpers() {
+    var wrap = $("modalHelpers");
+    wrap.innerHTML = "";
+
+    var team = state.activeTeam;
+
+    for (var i = 0; i < 3; i++) {
+      var btn = el("button", "helper-btn");
+      btn.type = "button";
+      btn.innerHTML = ICONS.buoy;
+      btn.setAttribute("aria-label", "وسيلة مساعدة");
+
+      // already used?
+      if (i >= state.teams[team].helpers) {
+        btn.classList.add("is-used");
+        btn.disabled = true;
       }
-    });
+
+      (function (button) {
+        button.addEventListener("click", function () {
+          if (button.classList.contains("is-used")) return;
+
+          button.classList.add("is-used");
+          button.disabled = true;
+
+          state.teams[team].helpers--;
+        });
+      })(btn);
+
+      wrap.appendChild(btn);
+    }
   }
 
   function renderBoardGrid() {
@@ -499,6 +549,7 @@
     skipBtn.disabled = false;
 
     resetTimer();
+    renderModalHelpers();
     modal.hidden = false;
     document.body.style.overflow = "hidden";
     timerStart.focus();
@@ -521,19 +572,37 @@
   }
 
   /* Resolve — NO automatic turn switch (host controls turns manually) */
-  function resolveQuestion(awardPoints) {
-    var scoringTeam = state.activeTeam;
-    if (awardPoints && state.current) state.teams[scoringTeam].score += state.current.points;
+  function resolveQuestion(scoringTeam) {
+
+    if (scoringTeam !== null && state.current) {
+      state.teams[scoringTeam].score += state.current.points;
+    }
+
     markUsed();
     closeModal();
-    updateScoreboard(awardPoints ? scoringTeam : false);
-    if (state.remaining <= 0) window.setTimeout(showWinner, 650);
+
+    // Automatically switch turns
+    state.activeTeam = state.activeTeam === 0 ? 1 : 0;
+
+    updateScoreboard(scoringTeam);
+
+    if (state.remaining <= 0) {
+      window.setTimeout(showWinner, 650);
+    }
   }
 
   revealBtn.addEventListener("click", revealAnswer);
-  rightBtn.addEventListener("click", function () { resolveQuestion(true); });
-  wrongBtn.addEventListener("click", function () { resolveQuestion(false); });
-  skipBtn.addEventListener("click", function () { resolveQuestion(false); });
+  rightBtn.addEventListener("click", function () {
+    resolveQuestion(0); // Team 1
+  });
+
+  wrongBtn.addEventListener("click", function () {
+    resolveQuestion(1); // Team 2
+  });
+
+  skipBtn.addEventListener("click", function () {
+    resolveQuestion(null); // Nobody
+  });
   backBtn.addEventListener("click", closeModal);
   modalOverlay.addEventListener("click", closeModal);
   document.addEventListener("keydown", function (e) {
@@ -586,6 +655,27 @@
   $("settingsClose").addEventListener("click", function () { settingsModal.hidden = true; });
   $("settingsOverlay").addEventListener("click", function () { settingsModal.hidden = true; });
 
+  $("previousGamesBtn").addEventListener("click", function () {
+
+    settingsModal.hidden = false;
+
+    // Remove active state from all tabs/pages
+    document.querySelectorAll(".settings-tab")
+      .forEach(tab => tab.classList.remove("is-active"));
+
+    document.querySelectorAll(".settings-page")
+      .forEach(page => page.classList.remove("is-active"));
+
+    // Activate Previous Games tab
+    document.querySelector('.settings-tab[data-tab="history"]')
+      .classList.add("is-active");
+
+    document.getElementById("page-history")
+      .classList.add("is-active");
+
+  });
+
+
   /* ============================================================
      SCREEN 5 — WINNER
      ============================================================ */
@@ -617,6 +707,8 @@
 
     spawnConfetti();
     showScreen("winner");
+    winnerMusic.currentTime = 0;
+    winnerMusic.play().catch(() => { });
   }
 
   function spawnConfetti() {
@@ -633,7 +725,6 @@
     }
   }
 
-  $("playAgainBtn").addEventListener("click", buildBoard);
   $("homeBtn").addEventListener("click", resetToHome);
   $("hudHome").addEventListener("click", function () {
     if (!modal.hidden) closeModal();
@@ -652,6 +743,8 @@
     state.remaining = QUESTIONS_PER_CAT * 4;
     confetti.innerHTML = "";
     showScreen("setup");
+    winnerMusic.pause();
+    winnerMusic.currentTime = 0;
   }
 
   /* ============================================================
@@ -680,3 +773,25 @@
   setRemainingGames(state.remainingGames);
   showScreen("setup");
 })();
+
+const tabs = document.querySelectorAll(".settings-tab");
+
+tabs.forEach(tab => {
+
+  tab.addEventListener("click", () => {
+
+    tabs.forEach(t => t.classList.remove("is-active"));
+
+    document.querySelectorAll(".settings-page")
+      .forEach(p => p.classList.remove("is-active"));
+
+    tab.classList.add("is-active");
+
+    document
+      .getElementById("page-" + tab.dataset.tab)
+      .classList.add("is-active");
+
+  });
+
+});
+
